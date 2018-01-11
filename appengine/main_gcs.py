@@ -24,10 +24,9 @@ class PushToPubSub(webapp2.RequestHandler):
     def get(self, topic):
     	
     	url = "https://data.cityofchicago.org/resource/8v9j-bter.json"
-		    	
-    	try:
-	    	result = urlfetch.fetch(url)
-	    if result.status_code == 200:
+	    	
+    	result = urlfetch.fetch(url)
+    	if result.status_code == 200:
 	    	data = result.content
 	    	
 	    	bucket = "/case-interview-testbucket"
@@ -36,9 +35,6 @@ class PushToPubSub(webapp2.RequestHandler):
 	    	gcs_file = gcs.open(filename,'w')
 	    	gcs_file.write(data)
 	    	gcs_file.close()
-	    	
-		except urlfetch.Error:
-	    	logging.exception('Caught exception fetching url')
     	
         pubsub_utils.publish_to_topic(topic, str(time.time()))
 
