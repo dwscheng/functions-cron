@@ -40,7 +40,7 @@ class PushToPubSub(webapp2.RequestHandler):
 		except urlfetch.Error:
 	    	logging.exception('Caught exception fetching url')
     	
-        pubsub_utils.publish_to_topic(topic, 'hourly-tick')
+        pubsub_utils.publish_to_topic(topic, str(time.time()))
 
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps({"status": "200"}))
